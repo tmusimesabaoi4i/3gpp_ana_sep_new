@@ -56,7 +56,7 @@ example_ana/outputs/
 sample_ntt/*.csv
 
 # ── 可視化生成物 (再生成可能) ──
-for_visual/png/
+for_visual/
 
 # ── 一時スクリプト (デバッグ用) ──
 _*.py
