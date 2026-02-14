@@ -1,0 +1,11 @@
+v2: release-ready + visuals + newcomer + debug tooling
+
+- example_ana: 本番データでフル実行済みconfig+出力(A-E CSV + Excel)
+- for_visual: matplotlib 可視化スクリプト5本(A-E, 計11グラフ)
+- README_newcomer.md: 新規ユーザ向けクイックスタートガイド
+- sample_visual.md: 全グラフのサンプル集
+- debug_jobs.py: scope/unique適用後のサンプル抽出ツール
+- null_rate_report.py: 企業x列指定でnull率レポート出力
+- sample_ntt/: NTT固定ターゲット再現セット
+- IMPROVEMENTS.md: 改善提案(B1)
+- 不要ファイル削除・config統合・gitignore整理
