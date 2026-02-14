@@ -49,20 +49,35 @@ desktop.ini
 .env.*.local
 
 # ── example_ana 生成物 (再実行で再生成可能) ──
-example_ana/outputs/*.csv
-example_ana/outputs/*.xlsx
+example_ana/out/
+example_ana/outputs/
 
-# ── 一時スクリプト (デバッグ用、リリース前に削除推奨) ──
+# ── sample_ntt 抽出結果 (再生成可能) ──
+sample_ntt/*.csv
+
+# ── 可視化生成物 (再生成可能) ──
+for_visual/png/
+
+# ── 一時スクリプト (デバッグ用) ──
 _*.py
+
+# ── null率レポート出力 ──
+null_sample.csv
+debug_raw_sample.csv
+debug_unique_sample.csv
 
 # ═══════════════════════════════════════════════════
 # コミット対象
 # ═══════════════════════════════════════════════════
-# config.json               ← ユーザ設定 (秘密情報なし)
-# config_r18_ntt_jp.json    ← 限定分析用config例
-# requirements.txt          ← 依存パッケージ
 # app/                      ← パイプライン本体
+# config.json               ← メイン config
+# requirements.txt          ← 依存パッケージ
 # example_ana/              ← サンプル分析 (config + README)
-# debug_check.py            ← 自動テスト
-# full_verify.py            ← 完全版検証
-# test_data_gen.py          ← テストデータ生成
+# for_visual/               ← 可視化スクリプト
+# sample_ntt/               ← NTT 固定ターゲット
+# debug_flow.py             ← 自動検証
+# debug_jobs.py             ← デバッグ用サンプル抽出
+# null_rate_report.py       ← null率レポート
+# README*.md                ← ドキュメント
+# sample_visual.md          ← 可視化サンプル集
+# IMPROVEMENTS.md           ← 改善提案

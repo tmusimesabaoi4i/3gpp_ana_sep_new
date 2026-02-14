@@ -1,13 +1,23 @@
 # example_ana — サンプル分析結果
 
-> **注意**: この出力は `config.json` (または `example_ana/config_examples/example_ana_config_used.json`) で再現可能です。
+> この出力は `example_ana/config.json` で完全に再現可能です。
 
 ## 再現手順
 
 ```bash
 # A〜E 全分析を実行 + 多シート Excel 出力
-python -m app.main --config config.json --excel
+python -m app.main --config example_ana/config.json --excel
+
+# 出力先: example_ana/out/
 ```
+
+## 追加 config 例
+
+| config | 用途 |
+|--------|------|
+| `configs/full_ae.json` | A〜E フル（out/ に出力） |
+| `configs/r18_ntt_jp.json` | Release18 × NTT × JP 限定 |
+| `configs/test_flags.json` | gen_flags / ess_flags テスト用 |
 
 ## 出力ファイル
 

@@ -1,0 +1,34 @@
+{
+  "_comment": "sample_ntt: NTT Docomo 固定ターゲット再現用",
+  "env": {
+    "sqlite_path": "work.sqlite",
+    "isld_csv_path": "./ISLD-export/ISLD-export.csv",
+    "out_dir": "sample_ntt/out"
+  },
+  "defaults": {
+    "scope": {
+      "companies": ["DOCOMO"],
+      "country_mode": "FILTER",
+      "country_prefixes": ["JP"]
+    },
+    "unique": {
+      "unit": "app",
+      "keep": { "order_by": [{"col": "__src_rownum", "dir": "ASC"}] }
+    },
+    "timeseries": { "period": "month" },
+    "extra": {
+      "analysis_countries": ["JP"],
+      "include_all": true
+    }
+  },
+  "excel_output": {
+    "enabled": false
+  },
+  "jobs": [
+    {
+      "job_id": "NTT_JP_filing",
+      "template": "ts_filing_count",
+      "job_description": "NTT Docomo × JP 月次出願数"
+    }
+  ]
+}

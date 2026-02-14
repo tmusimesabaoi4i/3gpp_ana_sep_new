@@ -4,6 +4,8 @@ GB 級の ISLD-export.csv を一度だけ SQLite に正規化し、以後は SQL
 **5 つの分析テンプレート (A〜E)** を **Config だけで** 実行し、  
 **ALL(全体) + 企業別** に分割された多シート Excel を自動生成するパイプラインです。
 
+> **はじめてのユーザ → [README_newcomer.md](README_newcomer.md)**（5分で動かす、10分で理解する）  
+> **可視化サンプル → [sample_visual.md](sample_visual.md)**（折れ線・棒・円・ヒートマップ等 11枚）  
 > **エンジニア向け詳細仕様 → [README_detail.md](README_detail.md)**
 
 ---
@@ -196,3 +198,11 @@ python -m app.main --config config.json --stop-after enrich
 > **注意**: `.gitignore` により `*.sqlite`、`out*/`、`logs/`、`ISLD-export/` はコミットされません。
 
 詳細な仕様・設計情報は **[README_detail.md](README_detail.md)** を参照してください。
+
+---
+
+## 参考資料
+
+- [ETSI IPR Open](https://docbox.etsi.org/IPR/Open) — ISLD データの公開元
+- [ETSI IPR Reporting Solutions](https://help.etsi.org/index.php?title=ETSI_IPR_Reporting_Solutions) — レポートの仕様
+- [ETSI IPR Details 例](https://ipr.etsi.org/IPRDetails.aspx?IPRD_ID=2381&IPRD_TYPE_ID=2&MODE=2) — 個別宣言の例

@@ -1,0 +1,95 @@
+{
+  "_comment": "example_ana 再現用 config — そのまま実行可能",
+  "env": {
+    "sqlite_path": "work.sqlite",
+    "isld_csv_path": "./ISLD-export/ISLD-export.csv",
+    "out_dir": "example_ana/out"
+  },
+
+  "defaults": {
+    "scope": { "country_mode": "ALL" },
+    "unique": {
+      "unit": "app",
+      "keep": { "order_by": [{"col": "__src_rownum", "dir": "ASC"}] }
+    },
+    "policies": {
+      "decl_date_policy": "signature_first",
+      "negative_lag_policy": "keep"
+    },
+    "timeseries": { "period": "month" },
+    "extra": {
+      "analysis_countries": ["JP", "US", "CN", "EP", "KR"],
+      "include_all": true
+    }
+  },
+
+  "excel_output": {
+    "enabled": true,
+    "path": "example_ana/out/analysis_results.xlsx",
+    "companies": {
+      "Ericsson": "ERICSSON",
+      "Fujitsu": "FUJITSU",
+      "Huawei": "HUAWEI",
+      "Kyocera": "KYOCERA",
+      "LG_Electronics": "LG ELECTRONICS",
+      "NEC": "NEC ",
+      "Nokia": "NOKIA",
+      "NTT_Docomo": "DOCOMO",
+      "Panasonic": "PANASONIC",
+      "Qualcomm": "QUALCOMM",
+      "Samsung": "SAMSUNG",
+      "Sharp": "SHARP",
+      "Toyota": "TOYOTA",
+      "Xiaomi": "XIAOMI",
+      "ZTE": "ZTE"
+    },
+    "meta_sheet": true
+  },
+
+  "jobs": [
+    {
+      "job_id": "A_filing_ts",
+      "template": "ts_filing_count",
+      "job_description": "国×企業×月次 出願数推移",
+      "override": {
+        "timeseries": { "period": "month" },
+        "extra": { "analysis_countries": ["JP","US","CN","EP","KR"], "include_all": true }
+      }
+    },
+    {
+      "job_id": "B_lag_stats",
+      "template": "ts_lag_stats",
+      "job_description": "国×企業×月次 lag分布サマリ",
+      "override": {
+        "policies": { "decl_date_policy": "signature_first" },
+        "timeseries": { "period": "month" },
+        "extra": { "analysis_countries": ["JP","US","CN","EP","KR"], "include_all": true }
+      }
+    },
+    {
+      "job_id": "C_top_specs",
+      "template": "ts_top_specs",
+      "job_description": "国×企業×月次 Top10 Spec推移",
+      "override": {
+        "timeseries": { "period": "month" },
+        "extra": { "analysis_countries": ["JP","US","CN","EP","KR"], "include_all": true, "top_k": 10 }
+      }
+    },
+    {
+      "job_id": "D_company_rank",
+      "template": "rank_company_counts",
+      "job_description": "国別 企業ランキング",
+      "override": {
+        "extra": { "analysis_countries": ["JP","US","CN","EP","KR"], "include_all": true }
+      }
+    },
+    {
+      "job_id": "E_spec_company_heat",
+      "template": "heat_spec_company",
+      "job_description": "Spec×会社ヒートマップ Top20",
+      "override": {
+        "extra": { "analysis_countries": ["JP","US","CN","EP","KR"], "include_all": true, "top_k": 20 }
+      }
+    }
+  ]
+}
