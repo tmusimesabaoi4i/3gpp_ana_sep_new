@@ -18,7 +18,7 @@ python -m app.main --config config.json --excel
 | `C_top_specs.csv` | C: TopSpec時系列 | ~404,000 | country × company × bucket × TGPP_NUMBER × cnt × rank |
 | `D_company_rank.csv` | D: 企業ランキング | ~1,600 | country × unique_unit × company × cnt × rank |
 | `E_spec_company_heat.csv` | E: Spec×会社 | ~9,500 | country × TGPP_NUMBER × company × cnt |
-| `analysis_results.xlsx` | 統合Excel | — | ALL_*/CO_* × A〜E + META (31シート) |
+| `analysis_results.xlsx` | 統合Excel | — | ALL_*/CO_* × A〜E + META (81シート: META + 5 ALL + 75 CO) |
 
 ## Excel シート構成
 
@@ -30,15 +30,25 @@ python -m app.main --config config.json --excel
 | ALL | `ALL_{analysis_key}` | `ALL_A_filing_ts` |
 | CO_企業 | `CO_{display_key}_{analysis_key}` | `CO_NTT_DOCOMO_A_filing_ts` |
 
-### 企業一覧（デフォルト config）
+### 企業一覧（デフォルト config: 15社）
 
 | display_key | LIKE パターン |
 |------------|--------------|
-| NTT_DOCOMO | DOCOMO |
-| HUAWEI | HUAWEI |
-| SHARP | SHARP |
-| OPPO | OPPO |
-| QUALCOMM | QUALCOMM |
+| Ericsson | ERICSSON |
+| Fujitsu | FUJITSU |
+| Huawei | HUAWEI |
+| Kyocera | KYOCERA |
+| LG_Electronics | LG ELECTRONICS |
+| NEC | NEC  |
+| Nokia | NOKIA |
+| NTT_Docomo | DOCOMO |
+| Panasonic | PANASONIC |
+| Qualcomm | QUALCOMM |
+| Samsung | SAMSUNG |
+| Sharp | SHARP |
+| Toyota | TOYOTA |
+| Xiaomi | XIAOMI |
+| ZTE | ZTE |
 
 ## 各分析の列定義
 

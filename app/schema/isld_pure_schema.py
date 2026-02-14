@@ -44,6 +44,11 @@ def create_indexes_sql() -> list[str]:
         indexes.append(
             f"CREATE INDEX IF NOT EXISTS idx_{TABLE_NAME}_{col} ON {TABLE_NAME}({col});"
         )
+    # 派生キー（company_key, country_key）
+    for col in ("company_key", "country_key"):
+        indexes.append(
+            f"CREATE INDEX IF NOT EXISTS idx_{TABLE_NAME}_{col} ON {TABLE_NAME}({col});"
+        )
     return indexes
 
 

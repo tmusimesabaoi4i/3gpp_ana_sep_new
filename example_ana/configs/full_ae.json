@@ -29,11 +29,21 @@
     "enabled": true,
     "path": "out/analysis_results.xlsx",
     "companies": {
-      "NTT_DOCOMO": "DOCOMO",
-      "HUAWEI": "HUAWEI",
-      "SHARP": "SHARP",
-      "OPPO": "OPPO",
-      "QUALCOMM": "QUALCOMM"
+      "Ericsson": "ERICSSON",
+      "Fujitsu": "FUJITSU",
+      "Huawei": "HUAWEI",
+      "Kyocera": "KYOCERA",
+      "LG_Electronics": "LG ELECTRONICS",
+      "NEC": "NEC ",
+      "Nokia": "NOKIA",
+      "NTT_Docomo": "DOCOMO",
+      "Panasonic": "PANASONIC",
+      "Qualcomm": "QUALCOMM",
+      "Samsung": "SAMSUNG",
+      "Sharp": "SHARP",
+      "Toyota": "TOYOTA",
+      "Xiaomi": "XIAOMI",
+      "ZTE": "ZTE"
     },
     "meta_sheet": true
   },

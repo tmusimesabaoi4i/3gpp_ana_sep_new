@@ -88,12 +88,22 @@ python -m app.main --config config_r18_ntt_jp.json --excel
 "excel_output": {
   "enabled": true,
   "path": "out/analysis_results.xlsx",
-  "companies": {
-    "NTT_DOCOMO": "DOCOMO",   // display_key: LIKEパターン
-    "HUAWEI": "HUAWEI",
-    "SHARP": "SHARP",
-    "OPPO": "OPPO",
-    "QUALCOMM": "QUALCOMM"
+  "companies": {              // display_key: LIKEパターン (15社)
+    "Ericsson": "ERICSSON",
+    "Fujitsu": "FUJITSU",
+    "Huawei": "HUAWEI",
+    "Kyocera": "KYOCERA",
+    "LG_Electronics": "LG ELECTRONICS",
+    "NEC": "NEC ",
+    "Nokia": "NOKIA",
+    "NTT_Docomo": "DOCOMO",
+    "Panasonic": "PANASONIC",
+    "Qualcomm": "QUALCOMM",
+    "Samsung": "SAMSUNG",
+    "Sharp": "SHARP",
+    "Toyota": "TOYOTA",
+    "Xiaomi": "XIAOMI",
+    "ZTE": "ZTE"
   },
   "meta_sheet": true
 }

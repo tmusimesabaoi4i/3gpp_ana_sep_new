@@ -25,8 +25,12 @@ _ALLOWED_ORDER_COLUMNS = {
     "IPRD_SIGNATURE_DATE", "Reflected_Date", "PBPA_APP_DATE",
     "TGPP_NUMBER", "TGPV_VERSION",
     "COMP_LEGAL_NAME", "Country_Of_Registration",
+    "company_key", "country_key",
     "Patent_Type", "Standard",
     "Gen_2G", "Gen_3G", "Gen_4G", "Gen_5G",
+    "Ess_To_Standard", "Ess_To_Project",
+    "DECL_IS_PROP_FLAG", "LICD_REC_CONDI_FLAG",
+    "Normalized_Patent", "Explicitely_Disclosed",
     # enrich 由来 (TEMP)
     "decl_date", "lag_days", "release_num", "time_bucket",
 }
