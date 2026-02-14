@@ -1,0 +1,77 @@
+{
+  "env": {
+    "sqlite_path": "work.sqlite",
+    "isld_csv_path": "./ISLD-export/ISLD-export.csv",
+    "out_dir": "out/R18_NTT_JP"
+  },
+
+  "defaults": {
+    "scope": {
+      "companies": ["NTT"],
+      "country_prefixes": ["JP"],
+      "version_prefixes": ["18"],
+      "country_mode": "FILTER"
+    },
+    "unique": {
+      "unit": "app",
+      "keep": { "order_by": [{"col": "__src_rownum", "dir": "ASC"}] }
+    },
+    "policies": {
+      "decl_date_policy": "signature_first",
+      "negative_lag_policy": "keep"
+    },
+    "timeseries": { "period": "month" },
+    "extra": {
+      "analysis_countries": ["JP"],
+      "include_all": true
+    }
+  },
+
+  "excel_output": {
+    "enabled": true,
+    "path": "out/R18_NTT_JP/R18_NTT_JP_results.xlsx",
+    "companies": {
+      "NTT_DOCOMO": "DOCOMO",
+      "NTT": "NTT"
+    },
+    "meta_sheet": true
+  },
+
+  "jobs": [
+    {
+      "job_id": "R18_A_filing_ts",
+      "template": "ts_filing_count",
+      "job_description": "R18 NTT JP: 出願数月次推移",
+      "filters_explain": ["scope: NTT, JP, Release 18.*", "unique_unit = app"],
+      "override": {}
+    },
+    {
+      "job_id": "R18_B_lag_stats",
+      "template": "ts_lag_stats",
+      "job_description": "R18 NTT JP: lag分布サマリ月次",
+      "filters_explain": ["scope: NTT, JP, Release 18.*"],
+      "override": {}
+    },
+    {
+      "job_id": "R18_C_top_specs",
+      "template": "ts_top_specs",
+      "job_description": "R18 NTT JP: TGPP TopN月次",
+      "filters_explain": ["scope: NTT, JP, Release 18.*", "top_k = 10"],
+      "override": { "extra": { "top_k": 10 } }
+    },
+    {
+      "job_id": "R18_D_company_rank",
+      "template": "rank_company_counts",
+      "job_description": "R18 NTT JP: 企業ランキング",
+      "filters_explain": ["scope: NTT, JP, Release 18.*", "unique_unit = app"],
+      "override": {}
+    },
+    {
+      "job_id": "R18_E_spec_company_heat",
+      "template": "heat_spec_company",
+      "job_description": "R18 NTT JP: Spec×会社ヒートマップ",
+      "filters_explain": ["scope: NTT, JP, Release 18.*", "top_k = 20"],
+      "override": { "extra": { "top_k": 20 } }
+    }
+  ]
+}

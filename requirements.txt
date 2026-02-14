@@ -1,0 +1,5 @@
+# ISLD Pipeline Dependencies
+# Python 3.10+ required (sqlite3, csv, json are stdlib)
+
+# Optional: Excel output support
+openpyxl>=3.1.0

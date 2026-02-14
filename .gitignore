@@ -1,0 +1,68 @@
+# ═══════════════════════════════════════════════════
+# ISLD Pipeline .gitignore
+# ═══════════════════════════════════════════════════
+
+# ── SQLite (GB級。絶対にコミットしない) ──
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# ── 実行生成物 ──
+out*/
+logs/
+
+# ── 入力データ (GB級CSV) ──
+ISLD-export/
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+*.whl
+
+# ── 仮想環境 ──
+.venv/
+venv/
+env/
+
+# ── IDE ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── 環境変数 ──
+.env
+.env.local
+.env.*.local
+
+# ── example_ana 生成物 (再実行で再生成可能) ──
+example_ana/outputs/*.csv
+example_ana/outputs/*.xlsx
+
+# ── 一時スクリプト (デバッグ用、リリース前に削除推奨) ──
+_*.py
+
+# ═══════════════════════════════════════════════════
+# コミット対象
+# ═══════════════════════════════════════════════════
+# config.json               ← ユーザ設定 (秘密情報なし)
+# config_r18_ntt_jp.json    ← 限定分析用config例
+# requirements.txt          ← 依存パッケージ
+# app/                      ← パイプライン本体
+# example_ana/              ← サンプル分析 (config + README)
+# debug_check.py            ← 自動テスト
+# full_verify.py            ← 完全版検証
+# test_data_gen.py          ← テストデータ生成

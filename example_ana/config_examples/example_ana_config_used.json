@@ -1,0 +1,75 @@
+{
+  "_comment": "example_ana 再現用 config — メインの config.json と同等",
+  "env": {
+    "sqlite_path": "work.sqlite",
+    "isld_csv_path": "./ISLD-export/ISLD-export.csv",
+    "out_dir": "out"
+  },
+  "defaults": {
+    "scope": {
+      "country_mode": "ALL"
+    },
+    "unique": {
+      "unit": "app",
+      "keep": { "order_by": [{"col": "__src_rownum", "dir": "ASC"}] }
+    },
+    "policies": {
+      "decl_date_policy": "signature_first",
+      "negative_lag_policy": "keep"
+    },
+    "timeseries": { "period": "month" },
+    "extra": {
+      "analysis_countries": ["JP", "US", "CN", "EP", "KR"],
+      "include_all": true
+    }
+  },
+  "excel_output": {
+    "enabled": true,
+    "path": "out/analysis_results.xlsx",
+    "companies": {
+      "NTT_DOCOMO": "DOCOMO",
+      "HUAWEI": "HUAWEI",
+      "SHARP": "SHARP",
+      "OPPO": "OPPO",
+      "QUALCOMM": "QUALCOMM"
+    },
+    "meta_sheet": true
+  },
+  "jobs": [
+    {
+      "job_id": "A_filing_ts",
+      "template": "ts_filing_count",
+      "job_description": "国×企業×月次 出願数推移（COUNT DISTINCT app単位）",
+      "filters_explain": ["unique_unit=app", "analysis_countries=JP,US,CN,EP,KR+ALL", "period=month"],
+      "override": {}
+    },
+    {
+      "job_id": "B_lag_stats",
+      "template": "ts_lag_stats",
+      "job_description": "国×企業×月次 lag分布サマリ（min/Q1/median/Q3/max）",
+      "filters_explain": ["lag_days=DECL_DATE-PBPA_APP_DATE", "period=month"],
+      "override": {}
+    },
+    {
+      "job_id": "C_top_specs",
+      "template": "ts_top_specs",
+      "job_description": "国×企業×月次 TGPP_NUMBER Top10 推移",
+      "filters_explain": ["top_k=10", "period=month"],
+      "override": { "extra": { "top_k": 10 } }
+    },
+    {
+      "job_id": "D_company_rank",
+      "template": "rank_company_counts",
+      "job_description": "国別 企業ランキング（出願番号distinct数でランク付け）",
+      "filters_explain": ["unique_unit=app"],
+      "override": {}
+    },
+    {
+      "job_id": "E_spec_company_heat",
+      "template": "heat_spec_company",
+      "job_description": "Spec×会社ヒートマップ（Top20 TGPP_NUMBER × 会社、縦持ち）",
+      "filters_explain": ["top_k=20"],
+      "override": { "extra": { "top_k": 20 } }
+    }
+  ]
+}
