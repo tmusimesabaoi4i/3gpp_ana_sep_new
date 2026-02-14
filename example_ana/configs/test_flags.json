@@ -1,0 +1,90 @@
+{
+  "_comment": "指示3: gen_flags / ess_flags / country_mode 論理検証用",
+  "env": {
+    "sqlite_path": "work.sqlite",
+    "isld_csv_path": "./ISLD-export/ISLD-export.csv",
+    "out_dir": "out/test_flags"
+  },
+  "defaults": {
+    "unique": {"unit": "app"},
+    "policies": {"decl_date_policy": "signature_first", "negative_lag_policy": "keep"},
+    "timeseries": {"period": "year"},
+    "extra": {
+      "analysis_countries": ["JP", "US"],
+      "include_all": true
+    }
+  },
+  "jobs": [
+    {
+      "job_id": "G1_5g_only",
+      "template": "ts_filing_count",
+      "job_description": "Case G1: 5Gのみ (他世代=0)",
+      "filters_explain": ["Gen_5G=1, Gen_2G=0, Gen_3G=0, Gen_4G=0"],
+      "override": {
+        "scope": {
+          "gen_flags": {"2G": 0, "3G": 0, "4G": 0, "5G": 1},
+          "country_mode": "ALL"
+        }
+      }
+    },
+    {
+      "job_id": "G2_5g_incl",
+      "template": "ts_filing_count",
+      "job_description": "Case G2: 5G含む (他世代問わず)",
+      "filters_explain": ["Gen_5G=1 (他は条件なし)"],
+      "override": {
+        "scope": {
+          "gen_flags": {"5G": 1},
+          "country_mode": "ALL"
+        }
+      }
+    },
+    {
+      "job_id": "E1_ess_std_true",
+      "template": "rank_company_counts",
+      "job_description": "Case E1: Ess_To_Standard = true のみ",
+      "filters_explain": ["Ess_To_Standard = 1"],
+      "override": {
+        "scope": {
+          "ess_flags": {"ess_to_standard": true},
+          "country_mode": "ALL"
+        }
+      }
+    },
+    {
+      "job_id": "E2_ess_prj_false",
+      "template": "rank_company_counts",
+      "job_description": "Case E2: Ess_To_Project = false のみ",
+      "filters_explain": ["Ess_To_Project = 0 (注意: NULLは含まない)"],
+      "override": {
+        "scope": {
+          "ess_flags": {"ess_to_project": false},
+          "country_mode": "ALL"
+        }
+      }
+    },
+    {
+      "job_id": "C1_country_all",
+      "template": "ts_filing_count",
+      "job_description": "Case C1: country_mode=ALL (国フィルタなし)",
+      "filters_explain": ["country_mode=ALL"],
+      "override": {
+        "scope": {
+          "country_mode": "ALL"
+        }
+      }
+    },
+    {
+      "job_id": "C2_country_filter_jp",
+      "template": "ts_filing_count",
+      "job_description": "Case C2: country_mode=FILTER + JP のみ",
+      "filters_explain": ["country_mode=FILTER, country_prefixes=[JP]"],
+      "override": {
+        "scope": {
+          "country_mode": "FILTER",
+          "country_prefixes": ["JP"]
+        }
+      }
+    }
+  ]
+}

@@ -157,6 +157,22 @@ def build_column_specs() -> list[ColumnSpec]:
             db_affinity="INTEGER",
         ),
 
+        # ─── Essential フラグ ───
+        ColumnSpec(
+            name_sql="Ess_To_Standard",
+            source_headers=["Ess_To_Standard", "ess_to_standard",
+                            "Essential To Standard"],
+            col_type="BOOL", normalizer="norm_bool",
+            db_affinity="INTEGER",
+        ),
+        ColumnSpec(
+            name_sql="Ess_To_Project",
+            source_headers=["Ess_To_Project", "ess_to_project",
+                            "Essential To Project"],
+            col_type="BOOL", normalizer="norm_bool",
+            db_affinity="INTEGER",
+        ),
+
         # ─── 特許追加情報 ───
         ColumnSpec(
             name_sql="PBPA_TITLEEN",

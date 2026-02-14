@@ -123,19 +123,28 @@ app/
 
 ### 主要列と NULL 率（本番 4,901,074 行）
 
-| 列 | NULL 率 | 備考 |
-|----|---------|------|
-| IPRD_ID | 0.0% | 常に存在 |
-| DIPG_ID | 0.0% | 常に存在 |
-| DIPG_PATF_ID | 3.7% | **推奨 unique キー** |
-| PUBL_NUMBER | 11.8% | パイプ区切り複数値あり → 先頭のみ抽出 |
-| PATT_APPLICATION_NUMBER | 0.8% | "Pending" は NULL 化済み |
-| COMP_LEGAL_NAME | 0.0% | |
-| IPRD_SIGNATURE_DATE | 0.0% | `1900-01-01` は sentinel → enrich で NULLIF |
-| Reflected_Date | 0.0% | |
-| PBPA_APP_DATE | 4.9% | |
-| TGPV_VERSION | **73.7%** | データ特性。release 推定は non-null 分のみ |
-| Gen_2G〜Gen_5G | 14.5% | 0/1/NULL |
+| 列 | 型 | NULL 率 | 備考 |
+|----|----|---------|------|
+| IPRD_ID | INTEGER | 0.0% | 常に存在 |
+| DIPG_ID | INTEGER | 0.0% | 常に存在 |
+| DIPG_PATF_ID | INTEGER | 3.7% | **推奨 unique キー** |
+| PUBL_NUMBER | TEXT | 11.8% | パイプ区切り複数値あり → 先頭のみ抽出 |
+| PATT_APPLICATION_NUMBER | TEXT | 0.8% | "Pending" は NULL 化済み |
+| COMP_LEGAL_NAME | TEXT | 0.0% | |
+| Country_Of_Registration | TEXT | 0.0% | `"JP JAPAN"` 形式 |
+| IPRD_SIGNATURE_DATE | TEXT | 0.0% | `1900-01-01` は sentinel → enrich で NULLIF |
+| Reflected_Date | TEXT | 0.0% | |
+| PBPA_APP_DATE | TEXT | 4.9% | YYYY-MM-DD 形式（DATETIME は正規化済み） |
+| TGPP_NUMBER | TEXT | — | 3GPP 仕様番号 |
+| TGPV_VERSION | TEXT | **73.7%** | データ特性。release 推定は non-null 分のみ |
+| Standard | TEXT | — | 標準名称 |
+| Patent_Type | TEXT | — | 宣言種別 |
+| Gen_2G〜Gen_5G | INTEGER | 14.5% | 0/1/NULL（世代フラグ） |
+| **Ess_To_Standard** | INTEGER | **3.9%** | 0/1/NULL（Standard への essential 宣言） |
+| **Ess_To_Project** | INTEGER | **2.0%** | 0/1/NULL（Project への essential 宣言） |
+| PBPA_TITLEEN | TEXT | — | 英文特許タイトル |
+| Normalized_Patent | TEXT | — | 正規化済み特許番号 |
+| __src_rownum | INTEGER | 0.0% | CSV 読み込み順番号（NOT NULL） |
 
 ---
 
@@ -494,18 +503,29 @@ META シートには以下が含まれます:
 
 ### Essential フラグ（Ess_To_Standard / Ess_To_Project）
 
+これらの列は **isld_pure に実在** します（CSV の `Ess_To_Standard` / `Ess_To_Project` 列から `norm_bool` でロード）。
+
 | 列名 | 値 | 意味 |
 |------|----|------|
-| `Ess_To_Standard` | `true` (1) | 指定 Standard/Work item に essential として宣言されている |
-| `Ess_To_Standard` | `false` (0) | admin により Non-essential に変更された、または宣言なし |
-| `Ess_To_Standard` | `null` | 情報なし |
-| `Ess_To_Project` | `true` (1) | 特定 Project への essential 宣言あり |
-| `Ess_To_Project` | `false` (0) | 宣言なし、または Non-essential |
-| `Ess_To_Project` | `null` | Project がそもそも宣言されていない可能性あり |
+| `Ess_To_Standard` | `1` (true) | 指定 Standard/Work item に essential として宣言されている |
+| `Ess_To_Standard` | `0` (false) | admin により Non-essential に変更された |
+| `Ess_To_Standard` | `NULL` | 情報なし（宣言自体がない） |
+| `Ess_To_Project` | `1` (true) | 特定 Project への essential 宣言あり |
+| `Ess_To_Project` | `0` (false) | Non-essential として登録 |
+| `Ess_To_Project` | `NULL` | Project がそもそも宣言されていない可能性あり |
+
+#### 本番データの分布（4,901,074 行）
+
+| 列 | NULL | 0 (false) | 1 (true) |
+|----|-----:|----------:|---------:|
+| Ess_To_Standard | 191,849 (3.9%) | 5,503 (0.1%) | 4,703,722 (96.0%) |
+| Ess_To_Project | 97,204 (2.0%) | 5,477 (0.1%) | 4,798,393 (97.9%) |
 
 **注意**:
-- `Ess_To_Standard` は admin による Non-essential 変更があり得ます
-- `Ess_To_Project` は値が無い場合、Project 自体が宣言されていない可能性があります
+- 大部分の宣言は Essential=1 です（96-98%）
+- `Ess_To_Standard` は admin による Non-essential 変更（0）があり得ますが、ごく少数（0.1%）
+- `Ess_To_Project` の NULL は Project 宣言自体がないケースです
+- **Config の `ess_flags` で `false` を指定すると、値が `0` の行のみにマッチします（NULL はマッチしません）。NULL を含めたい場合は、`ess_flags` ではなく SQL レベルのカスタマイズが必要です。**
 
 #### Config での指定
 
