@@ -198,6 +198,45 @@ def norm_company_name(s: str | None) -> str | None:
     return norm_text(s)
 
 
+_COMPANY_STRIP = re.compile(r"[,.\-'\"()\[\]]")
+
+def norm_company_key(s: str | None) -> str | None:
+    """会社名 → 検索キー: UPPER + 句読点除去 + 空白圧縮
+
+    例: "NTT DOCOMO, INC." → "NTT DOCOMO INC"
+    """
+    if s is None:
+        return None
+    s = str(s).strip().upper()
+    if not s:
+        return None
+    s = _COMPANY_STRIP.sub(" ", s)
+    s = _MULTI_WS.sub(" ", s).strip()
+    return s if s else None
+
+
+def norm_country_key(s: str | None) -> str | None:
+    """国名 → ISO2コード抽出
+
+    例: "JP JAPAN" → "JP", "US UNITED STATES" → "US"
+    2文字のアルファベット先頭語があればそれを返す。
+    """
+    if s is None:
+        return None
+    s = str(s).strip()
+    if not s:
+        return None
+    parts = s.split()
+    if parts:
+        code = parts[0].upper()
+        if len(code) == 2 and code.isalpha():
+            return code
+    # fallback: 先頭2文字がアルファベットなら返す
+    if len(s) >= 2 and s[:2].isalpha():
+        return s[:2].upper()
+    return s.upper()
+
+
 # ──────────────────────────────────────────────
 # 名前→関数 マッピング
 # ──────────────────────────────────────────────
@@ -210,4 +249,6 @@ NORMALIZER_MAP: dict[str, callable] = {
     "norm_datetime": norm_datetime,
     "norm_patent_no": norm_patent_no,
     "norm_company_name": norm_company_name,
+    "norm_company_key": norm_company_key,
+    "norm_country_key": norm_country_key,
 }

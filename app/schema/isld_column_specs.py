@@ -32,6 +32,18 @@ def build_column_specs() -> list[ColumnSpec]:
             db_affinity="INTEGER",
         ),
         ColumnSpec(
+            name_sql="DECL_IS_PROP_FLAG",
+            source_headers=["DECL_IS_PROP_FLAG", "decl_is_prop_flag"],
+            col_type="TEXT", normalizer="norm_text",
+            db_affinity="TEXT",
+        ),
+        ColumnSpec(
+            name_sql="LICD_REC_CONDI_FLAG",
+            source_headers=["LICD_REC_CONDI_FLAG", "licd_rec_condi_flag"],
+            col_type="TEXT", normalizer="norm_text",
+            db_affinity="TEXT",
+        ),
+        ColumnSpec(
             name_sql="DIPG_ID",
             source_headers=["DIPG_ID", "dipg_id"],
             col_type="INT", normalizer="norm_int",
@@ -69,10 +81,24 @@ def build_column_specs() -> list[ColumnSpec]:
             db_affinity="TEXT",
         ),
         ColumnSpec(
+            name_sql="company_key",
+            source_headers=["COMP_LEGAL_NAME", "comp_legal_name",
+                            "Legal Name", "Company Legal Name"],
+            col_type="TEXT", normalizer="norm_company_key",
+            db_affinity="TEXT",
+        ),
+        ColumnSpec(
             name_sql="Country_Of_Registration",
             source_headers=["Country_Of_Registration", "country_of_registration",
                             "Country of Registration"],
             col_type="TEXT", normalizer="norm_text",
+            db_affinity="TEXT",
+        ),
+        ColumnSpec(
+            name_sql="country_key",
+            source_headers=["Country_Of_Registration", "country_of_registration",
+                            "Country of Registration"],
+            col_type="TEXT", normalizer="norm_country_key",
             db_affinity="TEXT",
         ),
 
@@ -177,6 +203,25 @@ def build_column_specs() -> list[ColumnSpec]:
         ColumnSpec(
             name_sql="PBPA_TITLEEN",
             source_headers=["PBPA_TITLEEN", "pbpa_titleen"],
+            col_type="TEXT", normalizer="norm_text",
+            db_affinity="TEXT",
+        ),
+        ColumnSpec(
+            name_sql="PBPA_PRIORITY_NUMBERS",
+            source_headers=["PBPA_PRIORITY_NUMBERS", "pbpa_priority_numbers"],
+            col_type="TEXT", normalizer="norm_text",
+            db_affinity="TEXT",
+        ),
+        ColumnSpec(
+            name_sql="Illustrative_Part",
+            source_headers=["Illustrative_Part", "Illustrative Part",
+                            "illustrative_part"],
+            col_type="TEXT", normalizer="norm_text",
+            db_affinity="TEXT",
+        ),
+        ColumnSpec(
+            name_sql="Explicitely_Disclosed",
+            source_headers=["Explicitely_Disclosed", "explicitely_disclosed"],
             col_type="TEXT", normalizer="norm_text",
             db_affinity="TEXT",
         ),
