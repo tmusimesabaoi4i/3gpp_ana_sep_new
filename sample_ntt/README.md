@@ -31,3 +31,23 @@ python debug_jobs.py --mode target --target-col DIPG_ID --target-val 43483 --out
 # NTT config 実行
 python -m app.main --config sample_ntt/config_ntt.json
 ```
+
+## 出願数時系列の CSV 出力 (mode=ts)
+
+`debug_jobs.py` の **ts モード**で、特定企業・特定月・特定国の出願数（ts_filing_count 相当）を CSV で取得できます。
+
+| オプション | 説明 | 例 |
+|-----------|------|-----|
+| `--company` | 企業名（LIKE 検索） | `"NTT DOCOMO INC."` |
+| `--date` | 対象月の任意の日（YYYY-MM-DD） | `2010-11-01` |
+| `--country` | 国コード（2文字） | `JP` |
+| `--out` | 出力 CSV パス（任意） | `sample_ntt/out/ntt_jp_2010-11.csv` |
+| `--db` | SQLite DB（省略時: work.sqlite） | `work.sqlite` |
+
+**例: NTT DOCOMO INC. の 2010年11月・JP の出願数を CSV 化**
+
+```bash
+python debug_jobs.py --mode ts --company "NTT DOCOMO INC." --date 2010-11-01 --country JP --out sample_ntt/out/ntt_jp_2010-11.csv
+```
+
+出力 CSV の列: `country`, `company`, `bucket`, `filing_count`（指定月の 1 日が `bucket`、その月内の出願件数が `filing_count`）。

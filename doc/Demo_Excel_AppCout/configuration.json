@@ -1,0 +1,63 @@
+{
+  "env": {
+    "sqlite_path": "work.sqlite",
+    "isld_csv_path": "./ISLD-export/ISLD-export.csv",
+    "out_dir": "./doc/Demo_Excel_AppCout"
+  },
+
+  "defaults": {
+    "scope": {
+      "country_mode": "ALL"
+    },
+    "unique": {
+      "unit": "app",
+      "keep": { "order_by": [{"col": "__src_rownum", "dir": "ASC"}] }
+    },
+    "policies": {
+      "decl_date_policy": "signature_first",
+      "negative_lag_policy": "keep"
+    },
+    "timeseries": { "period": "month" },
+    "extra": {
+      "analysis_countries": ["JP", "US", "CN", "EP", "KR"],
+      "include_all": true
+    }
+  },
+
+  "excel_output": {
+    "enabled": true,
+    "path": "./doc/Demo_Excel_AppCout/analysis_results.xlsx",
+    "companies": {
+      "Ericsson": "ERICSSON",
+      "Fujitsu": "FUJITSU",
+      "Huawei": "HUAWEI",
+      "Kyocera": "KYOCERA",
+      "LG_Electronics": "LG ELECTRONICS",
+      "NEC": "NEC ",
+      "Nokia": "NOKIA",
+      "NTT_Docomo": "DOCOMO",
+      "Panasonic": "PANASONIC",
+      "Qualcomm": "QUALCOMM",
+      "Samsung": "SAMSUNG",
+      "Sharp": "SHARP",
+      "Toyota": "TOYOTA",
+      "Xiaomi": "XIAOMI",
+      "ZTE": "ZTE"
+    },
+    "meta_sheet": true
+  },
+
+  "jobs": [
+    {
+      "job_id": "A_filing_ts",
+      "template": "ts_filing_count",
+      "job_description": "国×企業×月次 出願数推移（COUNT DISTINCT app単位）",
+      "filters_explain": [
+        "unique_unit = app (COUNT DISTINCT PATT_APPLICATION_NUMBER)",
+        "analysis_countries = JP, US, CN, EP, KR + ALL",
+        "period = month"
+      ],
+      "override": {}
+    }
+  ]
+}
