@@ -34,20 +34,13 @@ python -m app.main --config sample_ntt/config_ntt.json
 
 ## 条件に合う全行の CSV 出力 (mode=ts)
 
-`debug_jobs.py` の **ts モード**で、特定企業・特定月・特定国に合う**すべての行**を、**全列**のまま CSV で出力できます（集計ではなく生データ）。
-
-| オプション | 説明 | 例 |
-|-----------|------|-----|
-| `--company` | 企業名（LIKE 検索） | `"NTT DOCOMO INC."` |
-| `--date` | 対象月の任意の日（YYYY-MM-DD） | `2010-11-01` |
-| `--country` | 国コード（2文字） | `JP` |
-| `--out` | 出力 CSV パス（任意） | `sample_ntt/out/ntt_jp_2010-11.csv` |
-| `--db` | SQLite DB（省略時: work.sqlite） | `work.sqlite` |
-
-**例: NTT DOCOMO INC. の 2010年11月・JP に合う全行を CSV 化**
+`debug_jobs.py --mode ts` で、特定企業・特定月・特定国に合う**すべての行**を**全列**のまま CSV 出力できます。  
+`--date` は **YYYY-MM**（推奨）または YYYY-MM-DD。出力先の親ディレクトリは自動作成されます。
 
 ```bash
-python debug_jobs.py --mode ts --company "NTT DOCOMO INC." --date 2010-11-01 --country JP --out sample_ntt/out/ntt_jp_2010-11.csv
+python debug_jobs.py --mode ts --company "NTT DOCOMO INC." --date 2010-11 --country JP --out sample_ntt/out/ntt_jp_2010-11.csv
+python debug_jobs.py --mode ts --company NTT_Docomo --date 2010-11-01 --country JP --out sample_ntt/out/ntt_jp_2010-11.csv --config sample_ntt/config_ntt.json
 ```
 
-出力 CSV: `isld_pure` の全列がそのまま出ます（条件に合う行をすべて出力）。
+0件のときは `--show-sql` で company_patterns / country / month 範囲を確認してください。  
+詳細はプロジェクトルートの README.md「debug_jobs.py」節を参照。

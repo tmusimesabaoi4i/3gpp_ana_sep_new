@@ -184,6 +184,94 @@ python -m app.main --config config.json --print-plan
 python -m app.main --config config.json --stop-after enrich
 ```
 
+---
+
+## debug_jobs.py（デバッグ用サンプル抽出）
+
+### モード一覧
+
+| モード | 説明 |
+|--------|------|
+| **raw** | scope のみ適用後のサンプル（上限 `--limit` 行） |
+| **unique** | scope + unique 適用後のサンプル（上限 `--limit` 行） |
+| **target** | 列=値のターゲット抽出（上限 `--limit` 行） |
+| **ts** | 企業×月×国で一致する全行を CSV 出力（全列） |
+
+### ts の使い方（推奨：YYYY-MM）
+
+```bash
+python debug_jobs.py --mode ts --company Ericsson --date 1997-10 --country JP --out out/ericsson_jp_1997-10.csv
+```
+
+### 会社名の表記ゆれ（Ericson / Ericsson）について
+
+`debug_jobs.py` は **company_aliases** を用いた alias 展開で揺れを吸収できます。
+
+config に以下を追加してください：
+
+```json
+"company_aliases": {
+  "Ericsson": ["ERICSSON", "ERICSON"]
+}
+```
+
+以後 `--company Ericsson` / `--company Ericson` どちらでも同じように検索できます。  
+config に `company_aliases` が無い場合は、内蔵の alias（Ericsson 等）が使われます。
+
+### 0件だったときの確認
+
+`--show-sql` を付けると SQL と params を表示します：
+
+```bash
+python debug_jobs.py --mode ts --company Ericsson --date 1997-10 --country JP --out out.csv --show-sql
+```
+
+以下が意図通りか確認してください：
+
+- **company_patterns**（alias 展開後の LIKE パターン）
+- **country prefix**（例: `JP %`）
+- **month_start** / **month_end**
+
+0件のときは、上記の内訳が stderr に自動で出力されます。
+
+### 出力先フォルダについて
+
+`--out` で指定したパスの親ディレクトリは **自動作成されます**（mkdir 不要）。
+
+### デバッグ手順（実装後に必ず実行）
+
+1. **出力先ディレクトリ自動作成の確認**  
+   存在しないフォルダを指定して実行し、エラーにならないこと。
+
+   ```bash
+   python debug_jobs.py --mode ts --company "NTT DOCOMO INC." --date 2010-11 --country JP --out ./sample_ntt/out/ntt_jp_2010-11.csv
+   ```
+
+2. **会社名揺れ吸収の確認（Ericson vs Ericsson）**  
+   `--company Ericson` でも `--company Ericsson` でもヒット件数が同等になること。
+
+   ```bash
+   python debug_jobs.py --mode ts --company Ericson  --date 1997-10 --country JP --out out/ericson.csv --show-sql
+   python debug_jobs.py --mode ts --company Ericsson --date 1997-10 --country JP --out out/ericsson.csv --show-sql
+   ```
+
+3. **date の入力互換確認（YYYY-MM と YYYY-MM-DD）**  
+   `1997-10` と `1997-10-15` が同じ月範囲になること（SQL params を比較）。
+
+   ```bash
+   python debug_jobs.py --mode ts --company Ericsson --date 1997-10    --country JP --out out/a.csv --show-sql
+   python debug_jobs.py --mode ts --company Ericsson --date 1997-10-15 --country JP --out out/b.csv --show-sql
+   ```
+
+4. **0件時のデバッグ情報表示**  
+   存在しない条件を与えた場合に、company / country / date の内訳が stderr に出ること。
+
+   ```bash
+   python debug_jobs.py --mode ts --company Ericsson --date 1900-01 --country JP --out out/none.csv --show-sql
+   ```
+
+---
+
 ## よくあるエラー
 
 | エラー | 原因 | 対処 |
