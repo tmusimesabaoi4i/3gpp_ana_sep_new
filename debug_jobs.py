@@ -146,7 +146,7 @@ def _company_where_from_patterns(patterns: list[str]) -> tuple[str, list[str]]:
         return "1=0", []
     placeholders = " OR ".join(["norm_company(COMP_LEGAL_NAME) LIKE ?"] * len(patterns))
     params = [f"%{p}%" for p in patterns]
-    return placeholders, params
+    return f"({placeholders})", params
 
 
 def _build_where(scope: dict, aliases: dict[str, list[str]] | None = None) -> tuple[list[str], list]:
