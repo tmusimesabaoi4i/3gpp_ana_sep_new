@@ -32,9 +32,9 @@ python debug_jobs.py --mode target --target-col DIPG_ID --target-val 43483 --out
 python -m app.main --config sample_ntt/config_ntt.json
 ```
 
-## 出願数時系列の CSV 出力 (mode=ts)
+## 条件に合う全行の CSV 出力 (mode=ts)
 
-`debug_jobs.py` の **ts モード**で、特定企業・特定月・特定国の出願数（ts_filing_count 相当）を CSV で取得できます。
+`debug_jobs.py` の **ts モード**で、特定企業・特定月・特定国に合う**すべての行**を、**全列**のまま CSV で出力できます（集計ではなく生データ）。
 
 | オプション | 説明 | 例 |
 |-----------|------|-----|
@@ -44,10 +44,10 @@ python -m app.main --config sample_ntt/config_ntt.json
 | `--out` | 出力 CSV パス（任意） | `sample_ntt/out/ntt_jp_2010-11.csv` |
 | `--db` | SQLite DB（省略時: work.sqlite） | `work.sqlite` |
 
-**例: NTT DOCOMO INC. の 2010年11月・JP の出願数を CSV 化**
+**例: NTT DOCOMO INC. の 2010年11月・JP に合う全行を CSV 化**
 
 ```bash
 python debug_jobs.py --mode ts --company "NTT DOCOMO INC." --date 2010-11-01 --country JP --out sample_ntt/out/ntt_jp_2010-11.csv
 ```
 
-出力 CSV の列: `country`, `company`, `bucket`, `filing_count`（指定月の 1 日が `bucket`、その月内の出願件数が `filing_count`）。
+出力 CSV: `isld_pure` の全列がそのまま出ます（条件に合う行をすべて出力）。
